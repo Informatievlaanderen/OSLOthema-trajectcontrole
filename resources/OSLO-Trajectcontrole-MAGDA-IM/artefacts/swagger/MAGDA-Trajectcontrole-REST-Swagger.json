@@ -1,30 +1,169 @@
 {
   "openapi": "3.0.4",
   "info": {
-    "title": "MAGDA Trajectcontrole REST",
-    "description": "MAGDA OSLO-conforme REST API voor Trajectcontrole",
-    "version": "0.0.1"
+    "title": "MAGDA Eucaris registraties REST",
+    "version": "0.0.1",
+    "contact": {
+        "name": "MAGDA Service Desk",
+        "url": "https://vlaamseoverheid.atlassian.net/servicedesk/customer/portal/2038"
+    },
+    "license": {
+        "name": "Gebruiksvoorwaarden",
+        "url": "https://vlaamseoverheid.atlassian.net/wiki/spaces/MG/pages/6175818080/GET+mobility+crossborderRegistrations+-+v1#Gebruiksvoorwaarden"
+    }
   },
   "servers": [
     {
-      "url": "https://implementatie.data.test-vlaanderen.be/",
+      "url": "api/v1/mobiliteit/",
       "description": "Basis URL"
     }
   ],
   "paths": {
-    "/v1/Registratiebewijs/{id}": {
+    "/registratiebewijzen": {
       "get": {
-        "summary": "De handeling van het zich registreren als gebruiker van een dienst, product of webpagina.",
-        "description": "Toegepast op de inschrijving van een voertuig.",
+        "summary": "Ophalen van een registratiebewijs van een voertuig.",
         "operationId": "RegistratiebewijsGET",
         "parameters": [
           {
-            "name": "id",
+            "$ref": "#/components/parameters/HdrAuthorization"
+          },
+          {
+            "$ref": "#/components/parameters/HdrX-Correlation-Id"
+          },
+          {
+            "$ref": "#/components/parameters/HdrLegalPurpose"
+          },
+          {
+            "$ref": "#/components/parameters/HdrOrganisation"
+          },
+          {
+            "$ref": "#/components/parameters/HdrTarget-Organisation"
+          },
+          {
+            "$ref": "#/components/parameters/HdrTarget-Organisation-Description"
+          },
+          {
+            "$ref": "#/components/parameters/HdrUser-Organisation"
+          },
+          {
+            "$ref": "#/components/parameters/HdrUser-Organisation-Description"
+          },
+          {
+            "$ref": "#/components/parameters/HdrApplication"
+          },
+          {
+            "$ref": "#/components/parameters/HdrUser-Id"
+          },
+          {
+            "$ref": "#/components/parameters/HdrUser-Reference"
+          },
+          {
+            "$ref": "#/components/parameters/HdrAccept-Language"
+          },
+          {
+            "in": "query",
+            "name": "overtreding",
+            "description": "Soort overtreding waarvoor het registratiebewijs wordt opgevraagd.",
             "required": true,
-            "in": "path",
-            "description": "Identificator van een Registratiebewijs object.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "10",
+                "11",
+                "12"
+              ]
+            },
+            "examples": {
+              "overdreven-snelheid": {"value": "1", "summary": "Overdreven snelheid"},
+              "rijden-onder-invloed-van-alcohol": {"value": "2", "summary": "Rijden onder invloed van alcohol"},
+              "niet-dragen-van-de-veiligheidsgordel": {"value": "3", "summary": "Niet dragen van de veiligheidsgordel"},
+              "negeren-van-rood-verkeerslicht": {"value": "4", "summary": "Negeren van rood verkeerslicht"},
+              "gebruik-van-verboden-rijbaan": {"value": "5", "summary": "Gebruik van verboden rijbaan"},
+              "rijden-onder-invloed-van-drugs": {"value": "10", "summary": "Rijden onder invloed van drugs"},
+              "niet-dragen-van-een-verplichte-helm": {"value": "11", "summary": "Niet-dragen van een verplichte helm"},
+              "afleiding-achter-het-stuur": {"value": "12", "summary": "Afleiding achter het stuur"}
+            }
+          },
+          {
+            "name": "land",
+            "in": "query",
+            "description": "Het land waarvan de data wordt aangevraagd.",
+            "required": true,
             "schema": {
               "type": "string"
+            },
+            "examples": {
+              "belgie": {"value": "BE", "summary": "België"},
+              "nederland": {"value": "NL", "summary": "Nederland"},
+              "duitsland": {"value": "DE", "summary": "Duitsland"},
+              "frankrijk": {"value": "FR", "summary": "Frankrijk"}
+            }
+          },
+          {
+            "name": "kenteken1",
+            "in": "query",
+            "description": "Het eerste deel van het kenteken.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "1ABC123": {"value": "1ABC123", "summary": "Nummerplaat 1ABC123"},
+              "2XYZ456": {"value": "2XYZ456", "summary": "Nummerplaat 2XYZ456"}
+            }
+          },
+          {
+            "name": "kenteken2",
+            "in": "query",
+            "description": "Het tweede deel van het kenteken.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "datum",
+            "in": "query",
+            "description": "De datum waarop de overtreding werd vastgesteld. Indien niet opgegeven wordt de huidige datum en tijd gebruikt.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "examples": {
+              "2023-01-01T08:00:00Z": {
+                "value": "2023-01-01T08:00:00Z",
+                "summary": "1 januari 2023 om 8 uur 's ochtends UTC"
+              },
+              "2020-04-01T10:00:00Z": {
+                "value": "2020-04-01T22:00:00Z",
+                "summary": "1 april 2020 om 22 uur 's avonds UTC"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "embed",
+            "description": "De data die moet worden opgehaald, kan worden beperkt tot een bepaalde set zoals enkel het voertuig of bestuurder.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "all",
+              "enum": [
+                "vehicle",
+                "person",
+                "all"
+              ]
+            },
+            "examples": {
+              "vehicle": {"value": "vehicle", "summary": "Enkel voertuig"},
+              "person": {"value": "person", "summary": "Enkel de eigenaar en bestuurder"},
+              "all": {"value": "all", "summary": "Alle informatie"}
             }
           }
         ],
@@ -63,6 +202,133 @@
             }
           }
         }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "HdrAuthorization": {
+        "name": "Authorization",
+        "in": "header",
+        "description": "The **Authorization** header is used to provide the access token for the request. The access token is a bearer token that is obtained from the authorization server after successful authentication and authorization. It is used to authenticate the client and authorize access to the requested resource.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "HdrX-Correlation-Id": {
+        "name": "X-Correlation-Id",
+        "in": "header",
+        "description": " The **X-Correlation-ID** is a free identifier created by the client to identify a request and all related requests in the context of a single transaction. It is used by the service to correlate requests and responses across multiple services and components, e.g. for logging and debugging purposes. It is recommended to use a UUID version 4 (random) string with enough entropy to avoid collisions.",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid",
+          "example": "7da7a728-f910-11e6-942a-68f728c1ba70"
+        }
+      },
+      "HdrLegalPurpose": {
+        "name": "Legal-Purpose",
+        "in": "header",
+        "description": "A unique identifier indicating the legal purpose. When no unique identifier received from Mobility it can be left empty. Should especially be used in combination with a 'cumul-clientID'.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "HdrOrganisation": {
+        "name": "Organisation",
+        "in": "header",
+        "description": "Identification of the organisation technically sending the request to SPF Mobility&Transport. It is the official 10-digit company number as known in the official company register.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "HdrTarget-Organisation": {
+        "name": "Target-Organisation",
+        "in": "header",
+        "description": "Identification of the organisation for which the information is intended, from which the information is coming or which is business-wise responsible. It is the official 10-digit company number as known in the official company register.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "HdrTarget-Organisation-Description": {
+        "name": "Target-Organisation-Description",
+        "in": "header",
+        "description": "Description of the target-organisation.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "HdrUser-Organisation": {
+        "name": "User-Organisation",
+        "in": "header",
+        "description": "Identification of the organisation of the user.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "HdrUser-Organisation-Description": {
+        "name": "User-Organisation-Description",
+        "in": "header",
+        "description": "Description of the organisation of the user.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "HdrApplication": {
+        "name": "Application",
+        "in": "header",
+        "description": "The requesting business application, agreed and predefined by SPF Mobility&Transports and is based on the business authorisation to the target-organisation.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "HdrUser-Id": {
+        "name": "User-Id",
+        "in": "header",
+        "description": "Identification of the person who is executing the request; the identification needs to be done by the users own organisation. It can be a reference which allows the organisation to retrieve the user within the organisation, the organisation can use the legal logging of transactions where a link between this reference and the user is logged. It cannot be the 11-digit national number of the user. This header is kept in the loggings and when necessary (for example in case of a legal investigation) the organisation needs to be able to identify the user.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "HdrUser-Reference": {
+        "name": "User-Reference",
+        "in": "header",
+        "description": "Identification of the reference assigned by the user.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "HdrAccept-Language": {
+        "name": "Accept-Language",
+        "in": "header",
+        "description": "Language in which valued properties of the response should be returned.",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "enum": [
+            "nl",
+            "fr",
+            "en",
+            "de"
+          ],
+          "default": "nl"
+        },
+        "examples": {
+            "nl": {"value": "nl", "summary": "Nederlands"},
+            "fr": {"value": "fr", "summary": "Frans"},
+            "en": {"value": "en", "summary": "Engels"},
+            "de": {"value": "de", "summary": "Duits"}
+          }
       }
     }
   }
