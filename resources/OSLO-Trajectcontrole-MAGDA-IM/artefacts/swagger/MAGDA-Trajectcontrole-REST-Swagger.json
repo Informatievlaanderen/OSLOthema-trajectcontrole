@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.4",
   "info": {
-    "title": "MAGDA Eucaris registraties REST",
-    "version": "0.0.1",
+    "title": "MAGDA Eucaris voertuigregistraties REST",
+    "version": "0.1.0",
     "contact": {
         "name": "MAGDA Service Desk",
         "url": "https://vlaamseoverheid.atlassian.net/servicedesk/customer/portal/2038"
@@ -19,10 +19,10 @@
     }
   ],
   "paths": {
-    "/registratiebewijzen": {
+    "/voertuigeregistraties": {
       "get": {
-        "summary": "Ophalen van een registratiebewijs van een voertuig.",
-        "operationId": "RegistratiebewijsGET",
+        "summary": "Ophalen van een voertuigregistratie uit Eucaris.",
+        "operationId": "VoertuigeregistratieGET",
         "parameters": [
           {
             "$ref": "#/components/parameters/HdrAuthorization"
@@ -169,35 +169,12 @@
         ],
         "responses": {
           "200": {
-            "description": "Registratiebewijs object gevonden.",
+            "description": "Voertuigregistratie object gevonden.",
             "content": {
               "application/ld+json": {
                 "schema": {
-                  "$ref": "components.json#/components/schemas/VoertuigeregistratieEnvelop"
+                  "$ref": "https://implementatie.data.test-vlaanderen.be/doc/implementatiemodel/magda/voertuigregistratie/v0.1.0/swagger/components.json#/components/schemas/VoertuigeregistratieEnvelop"
                 }
-              }
-            },
-            "links": {
-              "Registratiebewijs.bestuurder": {
-                "operationId": "RegistratiebewijsGET",
-                "parameters": {
-                  "id": "$response.body#/Registratiebewijs.bestuurder/@id"
-                },
-                "description": "De waarde van het attribuut `@id` kan gebruikt worden om het gerefereerde object van het type `Agent` op te halen."
-              },
-              "Registratiebewijs.eigenaar": {
-                "operationId": "RegistratiebewijsGET",
-                "parameters": {
-                  "id": "$response.body#/Registratiebewijs.eigenaar/@id"
-                },
-                "description": "De waarde van het attribuut `@id` kan gebruikt worden om het gerefereerde object van het type `Agent` op te halen."
-              },
-              "Registratiebewijs.voertuig": {
-                "operationId": "RegistratiebewijsGET",
-                "parameters": {
-                  "id": "$response.body#/Registratiebewijs.voertuig/@id"
-                },
-                "description": "De waarde van het attribuut `@id` kan gebruikt worden om het gerefereerde object van het type `Voertuig` op te halen."
               }
             }
           }
