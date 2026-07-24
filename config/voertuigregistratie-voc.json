@@ -5,7 +5,7 @@
     "eap": "OSLO-Voertuigregistratie-MAGDA-IMPL.eap",
     "diagram": "OSLO-Voertuigregistratie-MAGDA-IM-Enumeraties",
     "template": "voertuigregistratie-voc.j2",
-    "title": "Vocabularium MAGDA-Voertuigregistrie",
+    "title": "Vocabularium MAGDA-Voertuigregistratie",
     "publication-state": "https://data.vlaanderen.be/id/concept/StandaardStatus/ZonderStatus",
     "publication-date": "2026-07-24",
     "license": "https://data.vlaanderen.be/id/licentie/modellicentie-gratis-hergebruik/v1.0",
