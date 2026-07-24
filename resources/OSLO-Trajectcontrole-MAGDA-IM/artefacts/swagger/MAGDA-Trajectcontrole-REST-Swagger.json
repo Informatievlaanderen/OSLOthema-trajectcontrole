@@ -173,7 +173,7 @@
             "content": {
               "application/ld+json": {
                 "schema": {
-                  "$ref": "components.json#/components/schemas/Registratiebewijs"
+                  "$ref": "components.json#/components/schemas/VoertuigeregistratieEnvelop"
                 }
               }
             },
