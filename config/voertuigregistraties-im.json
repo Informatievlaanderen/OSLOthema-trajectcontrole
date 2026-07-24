@@ -1,18 +1,18 @@
 [
   {
-    "name": "trajectcontrole",
+    "name": "voertuigregistratie",
     "type": "impl",
-    "eap": "OSLO-Trajectcontrole-IMPL.eap",
-    "diagram": "OSLO-Trajectcontrole-IM-Enumeraties",
-    "template": "trajectcontrole-im.j2",
+    "eap": "OSLO-Voertuigeregistratie-MAGDA-IMPL.eap",
+    "diagram": "OSLO-Voertuigregistratie-MAGDA-IM-Enumeraties",
+    "template": "voertuigregistratie-im.j2",
     "title": "Implementatiemodel MAGDA-Voertuigregistratie",
     "publication-state": "https://data.vlaanderen.be/id/concept/StandaardStatus/ZonderStatus",
     "publication-date": "2026-07-10",
     "license": "https://data.vlaanderen.be/id/licentie/modellicentie-gratis-hergebruik/v1.0",
     "contributors-file": "stakeholders.csv",
     "contributors-column": "Rol",
-    "site": "site-skeleton/trajectcontrole-im",
-    "feedbackurl": "https://github.com/Informatievlaanderen/OSLOthema-trajectcontrole/issues",
+    "site": "site-skeleton/voertuigregistratie-im",
+    "feedbackurl": "https://github.com/Informatievlaanderen/OSLOthema-voertuigregistratie/issues",
     "standaardregisterurl": "https://data.vlaanderen.be/standaarden/implementatiemodel-voertuigregistratie-magda/"
   }
 ]
