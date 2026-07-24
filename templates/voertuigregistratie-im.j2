@@ -1,9 +1,39 @@
 {% extends "impl.j2" %}
 
-{% block summary %}
-<p>Vul hier een samenvatting van mijn implementatiemodel in.</p>
+{% block metainfo %}
+<div class="head" role="metainfo" id="metainfo">
+     <dl>
+        <dt>Brondata</dt>
+        <dd>
+           <a href="https://github.com/Informatievlaanderen/OSLOthema-trajectcontrole/releases/tag/{{ data.metadata.branchtag }}">https://github.com/Informatievlaanderen/OSLOthema-trajectcontrole/releases/tag/{{ data.metadata.branchtag }}</a>
+        </dd>
+        <dt>Changelog</dt>
+        <dd>
+           <a href="{{ data.metadata.documentroot }}/resources/CHANGELOG.md">{{ data.metadata.documentroot }}/resources/CHANGELOG.md</a>
+        </dd>
+        <dt>Opmerkingen en feedback</dt>
+        <dd>
+           <a href="{{ data.metadata.feedbackurl }}">{{ data.metadata.feedbackurl }}</a>
+        </dd>
+        <dd>
+           <a href="{{ data.metadata.standaardregisterurl }}">{{ data.metadata.standaardregisterurl }}</a>
+        </dd>
+        {% if data.metadata.dependencies %}
+           <dt>Afhankelijkheden</dt>
+           <dd>
+              {% for dep in metadata.dependencies %}
+                 <a href="{{ dep.packageurl }}">{{ dep.packagelabel }}</a>
+              {% endfor %}
+           </dd>
+        {% endif %}
+     </dl>
+</div>
 {% endblock %}
 
-{% block status %}
-<p>(Verwijder dit blok om een geautomatiseerde standaardparagraaf te laten verschijnen.)</p>
+{% block summary %}
+<p>
+Het MAGDA-Voertuigregistraties Implementatiemodel is gebasseerd op Eucaris, de Europese standaard om voertuigregistraties
+uit te wisselen tussen lidstaten. Voertuigregistraties laat toe om eigenaren, houders, en voertuigen uit te wisselen
+voor bijvoorbeeld handhaving doeleinden.
+</p>
 {% endblock %}
