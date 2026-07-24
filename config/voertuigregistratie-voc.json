@@ -3,7 +3,7 @@
     "name": "voertuigregistratie",
     "type": "voc",
     "eap": "OSLO-Voertuigregistratie-MAGDA-IMPL.eap",
-    "diagram": "OSLO-Voertuigeregistratie-MAGDA-IM-Enumeraties",
+    "diagram": "OSLO-Voertuigregistratie-MAGDA-IM-Enumeraties",
     "template": "voertuigregistratie-voc.j2",
     "title": "Vocabularium MAGDA-Voertuigregistrie",
     "publication-state": "https://data.vlaanderen.be/id/concept/StandaardStatus/ZonderStatus",

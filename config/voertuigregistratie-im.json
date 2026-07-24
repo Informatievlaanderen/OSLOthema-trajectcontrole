@@ -2,7 +2,7 @@
   {
     "name": "voertuigregistratie",
     "type": "impl",
-    "eap": "OSLO-Voertuigeregistratie-MAGDA-IMPL.eap",
+    "eap": "OSLO-Voertuigregistratie-MAGDA-IMPL.eap",
     "diagram": "OSLO-Voertuigregistratie-MAGDA-IM-Enumeraties",
     "template": "voertuigregistratie-im.j2",
     "title": "Implementatiemodel MAGDA-Voertuigregistratie",
