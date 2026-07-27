@@ -32,9 +32,20 @@
 
 {% block summary %}
 <p>
-Het MAGDA-Voertuigregistraties Implementatiemodel is gebasseerd op Eucaris, de Europese standaard om voertuigregistraties
-uit te wisselen tussen lidstaten. Voertuigregistraties laat toe om eigenaren, houders, en voertuigen uit te wisselen
-voor bijvoorbeeld handhaving doeleinden.
+Het MAGDA-Voertuigregistraties Implementatiemodel is gebasseerd op <a href="https://www.eucaris.net/" target="_blank">Eucaris</a>,
+de Europese standaard om voertuigregistraties uit te wisselen tussen lidstaten.
+Voertuigregistraties laat toe om eigenaren, houders, en voertuigen uit te wisselen voor bijvoorbeeld handhaving doeleinden.
+Dit implementatiemodel beperkt zich tot voertuigregistraties in het kader van handhaving zoals het uitschrijven van snelheidsboetes
+bij trajectcontroles en andere automatische systemen die overtredingen kunnen vaststellen. De bevoegde diensten gebruiken
+de uitgewisselde gegevens om de vaststelling om te zetten in een effectieve boete.
+</p>
+<p>
+Het implementatiemodel gebruikt de vocabularia van <a href="https://data.vlaanderen.be/ns/persoon/" target="_blank">OSLO Persoon</a>
+en <a href="https://data.vlaanderen.be/ns/organisatie/" target="_blank">OSLO Organisatie</a> om gegevens over de houder
+en eigenaar van het voertuig uit te wisselen. Het voertuig zelf is herbruikt van <a href="https://schema.org/Vehicle" target="_blank">Schema.org</a>
+waar alle relevante attributen over voertuigen zijn opgenomen die ook bij een registratie van een voertuig van toepassing zijn.
+Generieker klassen zoals Registratie en Nummerplaat zijn opgenomen in een apart vocabularium omdat deze herbruik zijn
+voor andere applicatieprofielen of implementatiemodellen.
 </p>
 {% endblock %}
 
