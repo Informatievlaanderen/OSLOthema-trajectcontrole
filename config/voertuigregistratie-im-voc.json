@@ -13,6 +13,6 @@
     "contributors-column": "Rol",
     "site": "site-skeleton/OSLO-Voertuigregistratie-MAGDA-IMPL",
     "feedbackurl": "https://github.com/Informatievlaanderen/OSLOthema-trajectcontrole/issues",
-    "standaardregisterurl": "https://data.vlaanderen.be/standaarden/vocabularium-magda-voertuigregistratie/"
+    "standaardregisterurl": "https://data.vlaanderen.be/standaarden/vocabularium-magda-voertuigregistraties/"
   }
 ]
