@@ -15,10 +15,10 @@ Een samenvatting is beschikbaar op het [Standaardenregister](https://data.vlaand
 Deze repository bevat de bronbestanden en de configuratie om de specificaties van het traject te genereren en te publiceren:
 
 - EAP-files met de UML-diagrammen van het informatie- en implementatiemodel, gepubliceerd via het [implementatiemodel Voertuigregistraties](https://implementatie.data.vlaanderen.be/doc/implementatiemodel/magda/voertuigregistratie/).
-- De Swagger/OpenAPI-specificatie van de REST-API: [MAGDA-Voertuigregistraties-REST-Swagger.json](https://implementatie.data.vlaanderen.be/doc/implementatiemodel/magda/voertuigregistratie/v0.1.0/resources/swagger/MAGDA-Voertuigregistraties-REST-Swagger.json) en de [herbruikbare OpenAPI-componenten](https://implementatie.data.vlaanderen.be/doc/implementatiemodel/magda/voertuigregistratie/v0.1.0/resources/swagger/components.json).
-- De herbruikbare [JSON-LD context](https://implementatie.data.vlaanderen.be/doc/implementatiemodel/magda/voertuigregistratie/v0.1.0/context/voertuigregistratie-im.jsonld) en het [SHACL template](https://implementatie.data.vlaanderen.be/doc/implementatiemodel/magda/voertuigregistratie/v0.1.0/shacl/voertuigregistratie-im-SHACL.ttl) van het implementatiemodel.
+- De Swagger/OpenAPI-specificatie van de REST-API: [MAGDA-Voertuigregistraties-REST-Swagger.json](https://implementatie.data.vlaanderen.be/doc/implementatiemodel/magda/voertuigregistratie/resources/swagger/MAGDA-Voertuigregistraties-REST-Swagger.json) en de [herbruikbare OpenAPI-componenten](https://implementatie.data.vlaanderen.be/doc/implementatiemodel/magda/voertuigregistratie/resources/swagger/components.json).
+- De herbruikbare [JSON-LD context](https://implementatie.data.vlaanderen.be/doc/implementatiemodel/magda/voertuigregistratie/context/voertuigregistratie-im.jsonld) en het [SHACL template](https://implementatie.data.vlaanderen.be/doc/implementatiemodel/magda/voertuigregistratie/shacl/voertuigregistratie-im-SHACL.ttl) van het implementatiemodel.
 - Configuratie en bestanden voor het publiceren van de specs in de folders [`config`](./config), [`site-skeleton`](./site-skeleton) en [`templates`](./templates).
-- Een [changelog](https://implementatie.data.vlaanderen.be/doc/implementatiemodel/magda/voertuigregistratie/v0.1.0/resources/CHANGELOG.md) met de wijzigingen ten opzichte van vorige versies.
+- Een [changelog](https://implementatie.data.vlaanderen.be/doc/implementatiemodel/magda/voertuigregistratie/resources/CHANGELOG.md) met de wijzigingen ten opzichte van vorige versies.
 
 ## Issues
 
