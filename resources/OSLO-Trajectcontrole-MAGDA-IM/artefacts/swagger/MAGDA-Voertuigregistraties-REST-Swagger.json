@@ -173,7 +173,7 @@
             "content": {
               "application/ld+json": {
                 "schema": {
-                  "$ref": "https://implementatie.data.test-vlaanderen.be/doc/implementatiemodel/magda/voertuigregistratie/v0.1.0/swagger/components.json#/components/schemas/VoertuigeregistratieEnvelop"
+                  "$ref": "components.json#/components/schemas/VehicleRegistrationEnvelope"
                 }
               }
             }
