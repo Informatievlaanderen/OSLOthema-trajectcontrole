@@ -30,7 +30,7 @@ Uit dit traject vloeit het onderstaande implementatiemodel voort. De licentie vo
 
 | Naam | Status | Uitgiftedatum | IMP |
 | ---- | ------ | ------------- | --- |
-| Implementatiemodel MAGDA-Voertuigregistraties | Zonder status | 2026-07-24 | [Link](https://data.vlaanderen.be/standaarden/implementatiemodel-magda-voertuigregistraties) |
-| Vocabularium MAGDA-Voertuigregistraties | Zonder status | 2026-07-24 | [Link](https://data.vlaanderen.be/standaarden/vocabularium-magda-voertuigregistraties) |
-| Vocabularium Voertuigregistraties | Zonder status | 2026-07-24 | [Link](https://data.vlaanderen.be/standaarden/vocabularium-voertuigregistraties) |
+| Implementatiemodel MAGDA-Voertuigregistraties | Zonder status | 2026-07-31 | [Link](https://data.vlaanderen.be/standaarden/implementatiemodel-magda-voertuigregistraties) |
+| Vocabularium MAGDA-Voertuigregistraties | Zonder status | 2026-07-31 | [Link](https://data.vlaanderen.be/standaarden/vocabularium-magda-voertuigregistraties) |
+| Vocabularium Voertuigregistraties | Zonder status | 2026-07-31 | [Link](https://data.vlaanderen.be/standaarden/vocabularium-voertuigregistraties) |
 
