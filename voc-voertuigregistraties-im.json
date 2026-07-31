@@ -1,5 +1,5 @@
 {
-  "title": "Vocabularium MAGDA - Voertuigregistraties Implementatiemodel",
+  "title": "Vocabularium MAGDA - Voertuigregistraties",
   "category": "https://data.vlaanderen.be/id/concept/StandaardType/Vocabularium",
   "usage": "https://data.vlaanderen.be/id/concept/StandaardGebruik/Aanbevolen",
   "status": "https://data.vlaanderen.be/id/concept/StandaardStatus/ZonderStatus",
@@ -10,7 +10,7 @@
       "resourceReference": "https://data.vlaanderen.be/id/organisatie/OVO002949"
     }
   ],
-  "publicationDate": "2026-07-27",
+  "publicationDate": "2026-07-31",
   "specificationDocuments": [
     {
       "name": "Vocabularium MAGDA - Voertuigregistraties",
