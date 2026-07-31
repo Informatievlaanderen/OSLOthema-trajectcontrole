@@ -67,16 +67,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": [
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "10",
-                "11",
-                "12"
-              ]
+              "pattern": "^(1|2|3|4|5|10|11|12)$"
             },
             "examples": {
               "overdreven-snelheid": {"value": "1", "summary": "Overdreven snelheid"},
@@ -154,11 +145,7 @@
             "schema": {
               "type": "string",
               "default": "all",
-              "enum": [
-                "vehicle",
-                "person",
-                "all"
-              ]
+              "pattern": "^(vehicle|person|all)$"
             },
             "examples": {
               "vehicle": {"value": "vehicle", "summary": "Enkel voertuig"},
@@ -292,12 +279,7 @@
         "required": true,
         "schema": {
           "type": "string",
-          "enum": [
-            "nl",
-            "fr",
-            "en",
-            "de"
-          ],
+          "pattern": "^(nl|fr|en|de)$",
           "default": "nl"
         },
         "examples": {
