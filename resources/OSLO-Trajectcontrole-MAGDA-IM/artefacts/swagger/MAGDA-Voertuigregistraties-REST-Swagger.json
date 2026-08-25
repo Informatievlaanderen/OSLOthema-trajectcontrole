@@ -19,10 +19,10 @@
     }
   ],
   "paths": {
-    "/voertuigeregistraties": {
+    "/voertuigregistraties": {
       "get": {
         "summary": "Ophalen van een voertuigregistratie uit Eucaris.",
-        "operationId": "VoertuigeregistratieGET",
+        "operationId": "VoertuigregistratieGET",
         "parameters": [
           {
             "$ref": "#/components/parameters/HdrAuthorization"
