@@ -83,7 +83,7 @@
           {
             "name": "land",
             "in": "query",
-            "description": "Het land waarvan de data wordt aangevraagd.",
+            "description": "Het land waarvan de data wordt aangevraagd volgens ISO 3166 alpha-2 codes.",
             "required": true,
             "schema": {
               "type": "string"
@@ -98,7 +98,7 @@
           {
             "name": "kenteken1",
             "in": "query",
-            "description": "Het eerste deel van het kenteken.",
+            "description": "Het eerste deel van het kenteken. In sommige landen zoals Duitsland bestaat het kenteken uit 2 delen: district code (kenteken1) en kenteken (kenteken2).",
             "required": true,
             "schema": {
               "type": "string"
@@ -111,7 +111,7 @@
           {
             "name": "kenteken2",
             "in": "query",
-            "description": "Het tweede deel van het kenteken.",
+            "description": "Het tweede deel van het kenteken. In sommige landen zoals Duitsland bestaat het kenteken uit 2 delen: district code (kenteken1) en kentenken (kenteken2)",
             "required": false,
             "schema": {
               "type": "string"
@@ -161,6 +161,66 @@
               "application/ld+json": {
                 "schema": {
                   "$ref": "components.json#/components/schemas/VehicleRegistrationEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ongeldige invoer.",
+            "content": {
+              "application/ld+json": {
+                "schema": {
+                  "$ref": "components.json#/components/schemas/Problemdetail"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Ongeldige authenticatie of autorisatie.",
+            "content": {
+              "application/ld+json": {
+                "schema": {
+                  "$ref": "components.json#/components/schemas/Problemdetail"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Er is een overwachte fout opgetreden.",
+            "content": {
+              "application/ld+json": {
+                "schema": {
+                  "$ref": "components.json#/components/schemas/Problemdetail"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Bad Gateway - foutief antwoord van de bronservice.",
+            "content": {
+              "application/ld+json": {
+                "schema": {
+                  "$ref": "components.json#/components/schemas/Problemdetail"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service unavailable - de bronservice is tijdelijk niet beschikbaar.",
+            "content": {
+              "application/ld+json": {
+                "schema": {
+                  "$ref": "components.json#/components/schemas/Problemdetail"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Gateway Timeout - de bronservice antwoordde niet binnen de tijdslimiet.",
+            "content": {
+              "application/ld+json": {
+                "schema": {
+                  "$ref": "components.json#/components/schemas/Problemdetail"
                 }
               }
             }

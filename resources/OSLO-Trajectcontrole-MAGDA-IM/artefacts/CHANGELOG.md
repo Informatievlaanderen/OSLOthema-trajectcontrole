@@ -7,10 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-09-14
+
+### Changed
+- Alle velden zijn nu optioneel voor filtering.
+
 ## [0.1.1] - 2026-07-31
 
 ### Changed
-- enums zijn vervangen door patterns in de Swagger
+- Enums zijn vervangen door patterns in de Swagger.
 
 ## [0.1.0] - 2026-07-31
 
