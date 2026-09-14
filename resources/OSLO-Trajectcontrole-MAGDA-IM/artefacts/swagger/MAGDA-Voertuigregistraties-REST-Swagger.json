@@ -25,9 +25,6 @@
         "operationId": "VoertuigregistratieGET",
         "parameters": [
           {
-            "$ref": "#/components/parameters/HdrAuthorization"
-          },
-          {
             "$ref": "#/components/parameters/HdrX-Correlation-Id"
           },
           {
@@ -231,15 +228,6 @@
   },
   "components": {
     "parameters": {
-      "HdrAuthorization": {
-        "name": "Authorization",
-        "in": "header",
-        "description": "The **Authorization** header is used to provide the access token for the request. The access token is a bearer token that is obtained from the authorization server after successful authentication and authorization. It is used to authenticate the client and authorize access to the requested resource.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
       "HdrX-Correlation-Id": {
         "name": "X-Correlation-Id",
         "in": "header",
