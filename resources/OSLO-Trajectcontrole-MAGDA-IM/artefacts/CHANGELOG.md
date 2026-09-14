@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Alle velden zijn nu optioneel voor filtering.
 - Meerdere registraties kunnen nu teruggegeven worden.
+- OpenAPI spec bumpt naar 3.1.0.
 
 ## [0.2.1] - 2026-09-03
 

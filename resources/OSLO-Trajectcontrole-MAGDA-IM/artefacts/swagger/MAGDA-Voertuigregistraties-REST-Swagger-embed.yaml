@@ -1,0 +1,848 @@
+openapi: 3.1.0
+info:
+  title: MAGDA Eucaris voertuigregistraties REST
+  version: 0.3.0
+  contact:
+    name: MAGDA Service Desk
+    url: 'https://vlaamseoverheid.atlassian.net/servicedesk/customer/portal/2038'
+  license:
+    name: Gebruiksvoorwaarden
+    url: >-
+      https://vlaamseoverheid.atlassian.net/wiki/spaces/MG/pages/6175818080/GET+mobility+crossborderRegistrations+-+v1#Gebruiksvoorwaarden
+servers:
+  - url: api/v1/mobiliteit/
+    description: Basis URL
+paths:
+  /voertuigregistraties:
+    get:
+      summary: Ophalen van een voertuigregistratie uit Eucaris.
+      operationId: VoertuigregistratieGET
+      parameters:
+        - $ref: '#/components/parameters/HdrAuthorization'
+        - $ref: '#/components/parameters/HdrX-Correlation-Id'
+        - $ref: '#/components/parameters/HdrLegalPurpose'
+        - $ref: '#/components/parameters/HdrOrganisation'
+        - $ref: '#/components/parameters/HdrTarget-Organisation'
+        - $ref: '#/components/parameters/HdrTarget-Organisation-Description'
+        - $ref: '#/components/parameters/HdrUser-Organisation'
+        - $ref: '#/components/parameters/HdrUser-Organisation-Description'
+        - $ref: '#/components/parameters/HdrApplication'
+        - $ref: '#/components/parameters/HdrUser-Id'
+        - $ref: '#/components/parameters/HdrUser-Reference'
+        - $ref: '#/components/parameters/HdrAccept-Language'
+        - in: query
+          name: overtreding
+          description: Soort overtreding waarvoor het registratiebewijs wordt opgevraagd.
+          required: true
+          schema:
+            type: string
+            pattern: ^(1|2|3|4|5|10|11|12)$
+          examples:
+            overdreven-snelheid:
+              value: '1'
+              summary: Overdreven snelheid
+            rijden-onder-invloed-van-alcohol:
+              value: '2'
+              summary: Rijden onder invloed van alcohol
+            niet-dragen-van-de-veiligheidsgordel:
+              value: '3'
+              summary: Niet dragen van de veiligheidsgordel
+            negeren-van-rood-verkeerslicht:
+              value: '4'
+              summary: Negeren van rood verkeerslicht
+            gebruik-van-verboden-rijbaan:
+              value: '5'
+              summary: Gebruik van verboden rijbaan
+            rijden-onder-invloed-van-drugs:
+              value: '10'
+              summary: Rijden onder invloed van drugs
+            niet-dragen-van-een-verplichte-helm:
+              value: '11'
+              summary: Niet-dragen van een verplichte helm
+            afleiding-achter-het-stuur:
+              value: '12'
+              summary: Afleiding achter het stuur
+        - name: land
+          in: query
+          description: >-
+            Het land waarvan de data wordt aangevraagd volgens ISO 3166 alpha-2
+            codes.
+          required: true
+          schema:
+            type: string
+          examples:
+            belgie:
+              value: BE
+              summary: België
+            nederland:
+              value: NL
+              summary: Nederland
+            duitsland:
+              value: DE
+              summary: Duitsland
+            frankrijk:
+              value: FR
+              summary: Frankrijk
+        - name: kenteken1
+          in: query
+          description: >-
+            Het eerste deel van het kenteken. In sommige landen zoals Duitsland
+            bestaat het kenteken uit 2 delen: district code (kenteken1) en
+            kenteken (kenteken2).
+          required: true
+          schema:
+            type: string
+          examples:
+            1ABC123:
+              value: 1ABC123
+              summary: Nummerplaat 1ABC123
+            2XYZ456:
+              value: 2XYZ456
+              summary: Nummerplaat 2XYZ456
+        - name: kenteken2
+          in: query
+          description: >-
+            Het tweede deel van het kenteken. In sommige landen zoals Duitsland
+            bestaat het kenteken uit 2 delen: district code (kenteken1) en
+            kentenken (kenteken2)
+          required: false
+          schema:
+            type: string
+        - name: datum
+          in: query
+          description: >-
+            De datum waarop de overtreding werd vastgesteld. Indien niet
+            opgegeven wordt de huidige datum en tijd gebruikt.
+          required: false
+          schema:
+            type: string
+            format: date-time
+          examples:
+            '2023-01-01T08:00:00Z':
+              value: '2023-01-01T08:00:00Z'
+              summary: 1 januari 2023 om 8 uur 's ochtends UTC
+            '2020-04-01T10:00:00Z':
+              value: '2020-04-01T22:00:00Z'
+              summary: 1 april 2020 om 22 uur 's avonds UTC
+        - in: query
+          name: embed
+          description: >-
+            De data die moet worden opgehaald, kan worden beperkt tot een
+            bepaalde set zoals enkel het voertuig of bestuurder.
+          required: false
+          schema:
+            type: string
+            default: all
+            pattern: ^(vehicle|person|all)$
+          examples:
+            vehicle:
+              value: vehicle
+              summary: Enkel voertuig
+            person:
+              value: person
+              summary: Enkel de eigenaar en bestuurder
+            all:
+              value: all
+              summary: Alle informatie
+      responses:
+        '200':
+          description: Voertuigregistratie object gevonden.
+          content:
+            application/ld+json:
+              schema:
+                $ref: >-
+                  components.json#/components/schemas/VehicleRegistrationEnvelope
+        '400':
+          description: Ongeldige invoer.
+          content:
+            application/ld+json:
+              schema:
+                $ref: 'components.json#/components/schemas/Problemdetail'
+        '401':
+          description: Ongeldige authenticatie of autorisatie.
+          content:
+            application/ld+json:
+              schema:
+                $ref: 'components.json#/components/schemas/Problemdetail'
+        '500':
+          description: Er is een overwachte fout opgetreden.
+          content:
+            application/ld+json:
+              schema:
+                $ref: 'components.json#/components/schemas/Problemdetail'
+        '502':
+          description: Bad Gateway - foutief antwoord van de bronservice.
+          content:
+            application/ld+json:
+              schema:
+                $ref: 'components.json#/components/schemas/Problemdetail'
+        '503':
+          description: Service unavailable - de bronservice is tijdelijk niet beschikbaar.
+          content:
+            application/ld+json:
+              schema:
+                $ref: 'components.json#/components/schemas/Problemdetail'
+        '504':
+          description: >-
+            Gateway Timeout - de bronservice antwoordde niet binnen de
+            tijdslimiet.
+          content:
+            application/ld+json:
+              schema:
+                $ref: 'components.json#/components/schemas/Problemdetail'
+components:
+  schemas:
+    Problemdetail.detail:
+      title: Problemdetail.detail
+      description: Mensleesbare beschrijving van de fout.
+      type: string
+    Problemdetail.instance:
+      title: Problemdetail.instance
+      description: 'Verwijzing naar de instantie van het object waarop de fout betrekking heeft. Bijvoorbeeld: de verwijzing naar de request.'
+      type: string
+      format: uri
+    Problemdetail.status:
+      title: Problemdetail.status
+      description: 'HTTP foutcode. Zoals beschreven in <a href="https://www.rfc-editor.org/rfc/rfc7231">RFC7231</a>. Bijvoorbeeld: 404 voor "Not Found".'
+      type: number
+      format: int64
+    Problemdetail.title:
+      title: Problemdetail.title
+      description: Korte mensleesbare beschrijving van de fout.
+      type: string
+    Problemdetail.type:
+      title: Problemdetail.type
+      description: Aard van de fout.
+      type: string
+      format: uri
+    Problemdetail:
+      title: Problemdetail
+      type: object
+      description: Meer gedetailleerde beschrijving van de fout in een HTTP response.
+      properties:
+        '@id':
+          type: string
+          format: uri
+        '@type':
+          type: string
+          description: Object type (klasse Problemdetail)
+          pattern: ^Problemdetail$
+        detail:
+          $ref: '#/components/schemas/Problemdetail.detail'
+        instance:
+          $ref: '#/components/schemas/Problemdetail.instance'
+        status:
+          $ref: '#/components/schemas/Problemdetail.status'
+        title:
+          $ref: '#/components/schemas/Problemdetail.title'
+        type:
+          $ref: '#/components/schemas/Problemdetail.type'
+      required:
+        - '@type'
+        - detail
+        - title
+        - type
+    VehicleRegistrationEnvelope.language:
+      title: VehicleRegistrationEnvelope.language
+      description: De taal van het antwoord.
+      type: string
+      pattern: ^[a-z]{2,3}(-[A-Z]{2})?
+    VehicleRegistrationEnvelope:
+      title: VehicleRegistrationEnvelope
+      type: object
+      description: Enveloppe om voertuigregistraties en bijhorende validatiewaarschuwing uit te wisselen.
+      properties:
+        '@id':
+          type: string
+          format: uri
+        '@type':
+          type: string
+          description: Object type (klasse VehicleRegistrationEnvelope)
+          pattern: ^VehicleRegistrationEnvelope$
+        language:
+          $ref: '#/components/schemas/VehicleRegistrationEnvelope.language'
+        data:
+          type: array
+          description: De data die overgedragen werd. Lijst van Registratie items.
+          items:
+            $ref: '#/components/schemas/Registratie'
+          minItems: 1
+        warning:
+          type: array
+          description: Foutmeldingen die opgetreden zijn bij het afleveren van de data. Foutmeldingen kunnen ook optreden bij HTTP 200 waarbij validatiefouten worden meegegeven zoals MAGDA Uitzonderingen. Lijst van Uitzondering items.
+          items:
+            $ref: '#/components/schemas/Uitzondering'
+          minItems: 1
+        '@context':
+          type: string
+          description: URI of the JSON-LD versioned context file for this response.
+          pattern: ^https:\/\/implementatie.data.vlaanderen.be\/doc\/implementatiemodel\/magda\/voertuigregistratie\/v0.3.0\/context\/voertuigregistratie-im.jsonld$
+      required:
+        - '@type'
+    Geboorte.datum:
+      title: Geboorte.datum
+      description: Datum waarop de gebeurtenis plaatsvond.
+      type: string
+      format: date
+    Geboorte:
+      title: Geboorte
+      type: object
+      description: Het ter wereld komen van een Persoon.
+      properties:
+        '@id':
+          type: string
+          format: uri
+        '@type':
+          type: string
+          description: Object type (klasse Geboorte)
+          pattern: ^Geboorte$
+        datum:
+          $ref: '#/components/schemas/Geboorte.datum'
+        plaats:
+          $ref: '#/components/schemas/Plaats'
+      required:
+        - '@type'
+    Concept.code:
+      title: Concept.code
+      description: Code waarmee het concept binnen de codelijst wordt aangeduid.
+      type: string
+    Concept.voorkeursnaam:
+      title: Concept.voorkeursnaam
+      description: Naam waarmee het concept bij voorkeur wordt aangeduid.
+      type: string
+    Concept:
+      title: Concept
+      type: object
+      description: Idee of begrip.
+      properties:
+        '@id':
+          type: string
+          format: uri
+        '@type':
+          type: string
+          description: Object type (klasse Concept)
+          pattern: ^Concept$
+        code:
+          $ref: '#/components/schemas/Concept.code'
+        voorkeursnaam:
+          $ref: '#/components/schemas/Concept.voorkeursnaam'
+      required:
+        - '@type'
+    Registratie:
+      title: Registratie
+      type: object
+      description: Inschrijving van een Voertuig in een nationaal register.
+      properties:
+        '@id':
+          type: string
+          format: uri
+        '@type':
+          type: string
+          description: Object type (klasse Registratie)
+          pattern: ^Registratie$
+        taal:
+          $ref: '#/components/schemas/Concept'
+        nummerplaat:
+          $ref: '#/components/schemas/Nummerplaat'
+        houder:
+          oneOf:
+            - $ref: '#/components/schemas/GeregistreerdeOrganisatie'
+            - $ref: '#/components/schemas/GeregistreerdPersoon'
+          discriminator:
+            propertyName: '@type'
+            mapping:
+              GeregistreerdeOrganisatie: '#/components/schemas/GeregistreerdeOrganisatie'
+              GeregistreerdPersoon: '#/components/schemas/GeregistreerdPersoon'
+        voertuig:
+          $ref: '#/components/schemas/Voertuig'
+      required:
+        - '@type'
+    Nummerplaat.referentiedatum:
+      title: Nummerplaat.referentiedatum
+      description: Datum waarvoor de toestand van de entiteit opgevraagd is.
+      type: string
+      format: date-time
+    Nummerplaat:
+      title: Nummerplaat
+      type: object
+      description: Fysieke drager van het registratienummer van het Voertuig.
+      properties:
+        '@id':
+          type: string
+          format: uri
+        '@type':
+          type: string
+          description: Object type (klasse Nummerplaat)
+          pattern: ^Nummerplaat$
+        referentiedatum:
+          $ref: '#/components/schemas/Nummerplaat.referentiedatum'
+        registratienummer:
+          $ref: '#/components/schemas/Identificator'
+      required:
+        - '@type'
+    Uitzondering.datum:
+      title: Uitzondering.datum
+      description: De datum waarop de Uitzondering aangemaakt werd.
+      type: string
+      format: date-time
+    Uitzondering.diagnose:
+      title: Uitzondering.diagnose
+      description: Een beschrijving waarom de Uitzondering aangemaakt werd.
+      type: string
+    Uitzondering:
+      title: Uitzondering
+      type: object
+      description: Uitzondering geeft miet-kritieke problemen weer bij het uitwisselen.
+      properties:
+        '@id':
+          type: string
+          format: uri
+        '@type':
+          type: string
+          description: Object type (klasse Uitzondering)
+          pattern: ^Uitzondering$
+        datum:
+          $ref: '#/components/schemas/Uitzondering.datum'
+        diagnose:
+          $ref: '#/components/schemas/Uitzondering.diagnose'
+        oorsprong:
+          $ref: '#/components/schemas/Concept'
+        type:
+          $ref: '#/components/schemas/Concept'
+        omstandigheid:
+          $ref: '#/components/schemas/Concept'
+        annotatie:
+          type: array
+          description: Verwijzing naar annotaties die bij de Uitzondering horen. Lijst van Annotatie items.
+          items:
+            $ref: '#/components/schemas/Annotatie'
+          minItems: 1
+      required:
+        - '@type'
+        - datum
+        - diagnose
+        - oorsprong
+        - type
+        - omstandigheid
+    Annotatie.naam:
+      title: Annotatie.naam
+      description: Naam van het veld.
+      type: string
+    Annotatie.waarde:
+      title: Annotatie.waarde
+      description: De waarde van het veld.
+      type: string
+    Annotatie:
+      title: Annotatie
+      type: object
+      description: Detailinformatie die meegegeven is bij een Uitzondering.
+      properties:
+        '@id':
+          type: string
+          format: uri
+        '@type':
+          type: string
+          description: Object type (klasse Annotatie)
+          pattern: ^Annotatie$
+        naam:
+          $ref: '#/components/schemas/Annotatie.naam'
+        waarde:
+          $ref: '#/components/schemas/Annotatie.waarde'
+      required:
+        - '@type'
+        - naam
+        - waarde
+    GeregistreerdeOrganisatie.referentiedatum:
+      title: GeregistreerdeOrganisatie.referentiedatum
+      description: Datum waarvoor de toestand van de entiteit opgevraagd is.
+      type: string
+      format: date-time
+    GeregistreerdeOrganisatie.voorkeursnaam:
+      title: GeregistreerdeOrganisatie.voorkeursnaam
+      description: Naam waarmee de Organisatie bij voorkeur wordt aangeduid.
+      type: string
+    GeregistreerdeOrganisatie:
+      title: GeregistreerdeOrganisatie
+      type: object
+      description: Organisatie met een juridisch statuut vastgelegd door registratie. Vergelijk met een FormeleOrganisatie waarbij dit statuut ook op een andere manier verkregen kan zijn.
+      properties:
+        '@id':
+          type: string
+          format: uri
+        '@type':
+          type: string
+          description: Object type (klasse GeregistreerdeOrganisatie)
+          pattern: ^GeregistreerdeOrganisatie$
+        referentiedatum:
+          $ref: '#/components/schemas/GeregistreerdeOrganisatie.referentiedatum'
+        voorkeursnaam:
+          $ref: '#/components/schemas/GeregistreerdeOrganisatie.voorkeursnaam'
+        rechtsvorm:
+          type: array
+          description: 'Juridisch statuut van de geregistreerde organisatie. Stemt in de KBO overeen met rechtsvorm, bijvoorbeeld: NV, VZW, Stad/Gemeente, OCMW etc. Lijst van Concept items.'
+          items:
+            $ref: '#/components/schemas/Concept'
+          minItems: 1
+        contactinfo:
+          $ref: '#/components/schemas/Contactpunt'
+        rechtspersoonlijkheid:
+          $ref: '#/components/schemas/Concept'
+        registratie:
+          $ref: '#/components/schemas/Identificator'
+      required:
+        - '@type'
+    Voertuig.eersteRegistratieDatum:
+      title: Voertuig.eersteRegistratieDatum
+      description: Eerste datum waarop het voertuig werd geregistreerd in een register.
+      type: string
+      format: date
+    Voertuig.commercieleNaam:
+      title: Voertuig.commercieleNaam
+      description: 'De commerciële benaming van het voertuig. Bijvoorbeeld: Nissan Micra N-Sport edition.'
+      type: string
+    Voertuig.fabrikantNaam:
+      title: Voertuig.fabrikantNaam
+      description: 'De interne benaming van het voertuig door de fabrikant. Bijvoorbeeld: Nissan Micra K14.'
+      type: string
+    Voertuig:
+      title: Voertuig
+      type: object
+      description: Een voertuig is een apparaat dat ontworpen of gebruikt is om mensen of vracht te vervoeren over land, water, lucht, of door de ruimte.
+      properties:
+        '@id':
+          type: string
+          format: uri
+        '@type':
+          type: string
+          description: Object type (klasse Voertuig)
+          pattern: ^Voertuig$
+        eersteRegistratieDatum:
+          $ref: '#/components/schemas/Voertuig.eersteRegistratieDatum'
+        commercieleNaam:
+          $ref: '#/components/schemas/Voertuig.commercieleNaam'
+        fabrikantNaam:
+          $ref: '#/components/schemas/Voertuig.fabrikantNaam'
+        type:
+          $ref: '#/components/schemas/Concept'
+        vin:
+          $ref: '#/components/schemas/Identificator'
+        eigenaar:
+          oneOf:
+            - $ref: '#/components/schemas/GeregistreerdeOrganisatie'
+            - $ref: '#/components/schemas/GeregistreerdPersoon'
+          discriminator:
+            propertyName: '@type'
+            mapping:
+              GeregistreerdeOrganisatie: '#/components/schemas/GeregistreerdeOrganisatie'
+              GeregistreerdPersoon: '#/components/schemas/GeregistreerdPersoon'
+      required:
+        - '@type'
+    Plaats.plaatsnaam:
+      title: Plaats.plaatsnaam
+      description: Naam van de plaats of van het gebied.
+      type: string
+    Plaats:
+      title: Plaats
+      type: object
+      description: Een ruimtelijk gebied of benoemde plaats.
+      properties:
+        '@id':
+          type: string
+          format: uri
+        '@type':
+          type: string
+          description: Object type (klasse Plaats)
+          pattern: ^Plaats$
+        plaatsnaam:
+          $ref: '#/components/schemas/Plaats.plaatsnaam'
+      required:
+        - '@type'
+    GeregistreerdPersoon.volledigeNaam:
+      title: GeregistreerdPersoon.volledigeNaam
+      description: De volledige naam van de Persoon, doorgaans de combinatie van voornamen en achternaam.
+      type: string
+    GeregistreerdPersoon.referentiedatum:
+      title: GeregistreerdPersoon.referentiedatum
+      description: Datum waarvoor de toestand van de entiteit opgevraagd is.
+      type: string
+      format: date-time
+    GeregistreerdPersoon.achternaam:
+      title: GeregistreerdPersoon.achternaam
+      description: Gedeelte van de volledige naam van de Persoon ontvangen van de vorige generatie. Ook wel familienaam genoemd omdat de achternaam een familiale verwantschap aanduidt.
+      type: string
+    GeregistreerdPersoon.alternatieveNaam:
+      title: GeregistreerdPersoon.alternatieveNaam
+      description: Alternatief voor de volledige naam van de Persoon. Bijvoorbeeld pseudoniem.
+      type: string
+    GeregistreerdPersoon.voornaam:
+      title: GeregistreerdPersoon.voornaam
+      description: Naam die een Persoon bij geboorte wordt gegeven. Onderscheidt de Persoon van de andere personen in de familie.
+      type: string
+    GeregistreerdPersoon:
+      title: GeregistreerdPersoon
+      type: object
+      description: Persoon waarvan de gegevens zijn ingeschreven in een register.
+      properties:
+        '@id':
+          type: string
+          format: uri
+        '@type':
+          type: string
+          description: Object type (klasse GeregistreerdPersoon)
+          pattern: ^GeregistreerdPersoon$
+        volledigeNaam:
+          $ref: '#/components/schemas/GeregistreerdPersoon.volledigeNaam'
+        referentiedatum:
+          $ref: '#/components/schemas/GeregistreerdPersoon.referentiedatum'
+        achternaam:
+          $ref: '#/components/schemas/GeregistreerdPersoon.achternaam'
+        alternatieveNaam:
+          type: array
+          description: Alternatief voor de volledige naam van de Persoon. Bijvoorbeeld pseudoniem. Lijst van String items.
+          items:
+            $ref: '#/components/schemas/GeregistreerdPersoon.alternatieveNaam'
+          minItems: 1
+        voornaam:
+          type: array
+          description: Naam die een Persoon bij geboorte wordt gegeven. Onderscheidt de Persoon van de andere personen in de familie. Lijst van String items.
+          items:
+            $ref: '#/components/schemas/GeregistreerdPersoon.voornaam'
+          minItems: 1
+        registratie:
+          $ref: '#/components/schemas/Identificator'
+        geslacht:
+          $ref: '#/components/schemas/Concept'
+        contactinfo:
+          $ref: '#/components/schemas/Contactpunt'
+        heeftGeboorte:
+          $ref: '#/components/schemas/Geboorte'
+      required:
+        - '@type'
+    Identificator.identificator:
+      title: Identificator.identificator
+      description: String gebruikt om het object uniek te identificeren. Type van de string slaat op het identificatiesysteem (inclusief de versie ervan), de string zelf op de eigenlijke identificator.
+      type: string
+    Identificator:
+      title: Identificator
+      type: object
+      description: Informatie gebruikt om een object uniek te identificeren.
+      properties:
+        '@id':
+          type: string
+          format: uri
+        '@type':
+          type: string
+          description: Object type (klasse Identificator)
+          pattern: ^Identificator$
+        identificator:
+          $ref: '#/components/schemas/Identificator.identificator'
+        schema:
+          $ref: '#/components/schemas/Concept'
+      required:
+        - '@type'
+    Adresvoorstelling.landcode:
+      title: Adresvoorstelling.landcode
+      description: Code van het land waarin het adres gelegen is.
+      type: string
+    Adresvoorstelling.busnummer:
+      title: Adresvoorstelling.busnummer
+      description: Officieel toegekende alfanumerieke code die wordt toegevoegd aan het huisnummer om meerdere gebouweenheden, standplaatsen, ligplaatsen of percelen te onderscheiden die eenzelfde huisnummer hebben. Specialisatie van Adresvoorstelling:locatieaanduiding ten behoeve van Belgische adressen.
+      type: string
+    Adresvoorstelling.gemeentenaam:
+      title: Adresvoorstelling.gemeentenaam
+      description: Gemeentenaam van het adres.
+      type: string
+    Adresvoorstelling.huisnummer:
+      title: Adresvoorstelling.huisnummer
+      description: Alfanumerieke code officieel toegekend aan gebouweenheden, ligplaatsen, standplaatsen of percelen. Specialisatie van Adresvoorstelling:locatieaanduiding ten behoeve van Belgische adressen.
+      type: string
+    Adresvoorstelling.land:
+      title: Adresvoorstelling.land
+      description: Land waarin het adres gelegen is.
+      type: string
+    Adresvoorstelling.postcode:
+      title: Adresvoorstelling.postcode
+      description: Code waarmee het geografisch gebied dat adressen voor postale doeleinden groepeert wordt aangeduid.
+      type: string
+    Adresvoorstelling.straatnaam:
+      title: Adresvoorstelling.straatnaam
+      description: Straatnaam van het adres.
+      type: string
+    Adresvoorstelling.volledigAdres:
+      title: Adresvoorstelling.volledigAdres
+      description: Het complete adres in één string, al dan niet geformatteerd. Vermijdt fouten ten gevolge van het opsplitsen van een adres in zijn onderdelen. Geeft de voorgeschreven volgorde van de verschillende onderdelen weer.
+      type: string
+    Adresvoorstelling:
+      title: Adresvoorstelling
+      type: object
+      description: Meer leesbare voorstelling met enkel de basisgegevens van het adres, bedoeld voor het gebruik van een adres als attribuut van een ander object.
+      properties:
+        '@id':
+          type: string
+          format: uri
+        '@type':
+          type: string
+          description: Object type (klasse Adresvoorstelling)
+          pattern: ^Adresvoorstelling$
+        landcode:
+          $ref: '#/components/schemas/Adresvoorstelling.landcode'
+        busnummer:
+          $ref: '#/components/schemas/Adresvoorstelling.busnummer'
+        gemeentenaam:
+          $ref: '#/components/schemas/Adresvoorstelling.gemeentenaam'
+        huisnummer:
+          $ref: '#/components/schemas/Adresvoorstelling.huisnummer'
+        land:
+          $ref: '#/components/schemas/Adresvoorstelling.land'
+        postcode:
+          $ref: '#/components/schemas/Adresvoorstelling.postcode'
+        straatnaam:
+          $ref: '#/components/schemas/Adresvoorstelling.straatnaam'
+        volledigAdres:
+          $ref: '#/components/schemas/Adresvoorstelling.volledigAdres'
+      required:
+        - '@type'
+    Contactpunt:
+      title: Contactpunt
+      type: object
+      description: Informatie zoals email, telefoon, adres die toelaat om iemand of iets te contacteren.
+      properties:
+        '@id':
+          type: string
+          format: uri
+        '@type':
+          type: string
+          description: Object type (klasse Contactpunt)
+          pattern: ^Contactpunt$
+        adres:
+          $ref: '#/components/schemas/Adresvoorstelling'
+      required:
+        - '@type'
+  parameters:
+    HdrAuthorization:
+      name: Authorization
+      in: header
+      description: >-
+        The **Authorization** header is used to provide the access token for the
+        request. The access token is a bearer token that is obtained from the
+        authorization server after successful authentication and authorization.
+        It is used to authenticate the client and authorize access to the
+        requested resource.
+      required: true
+      schema:
+        type: string
+    HdrX-Correlation-Id:
+      name: X-Correlation-Id
+      in: header
+      description: ' The **X-Correlation-ID** is a free identifier created by the client to identify a request and all related requests in the context of a single transaction. It is used by the service to correlate requests and responses across multiple services and components, e.g. for logging and debugging purposes. It is recommended to use a UUID version 4 (random) string with enough entropy to avoid collisions.'
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 7da7a728-f910-11e6-942a-68f728c1ba70
+    HdrLegalPurpose:
+      name: Legal-Purpose
+      in: header
+      description: >-
+        A unique identifier indicating the legal purpose. When no unique
+        identifier received from Mobility it can be left empty. Should
+        especially be used in combination with a 'cumul-clientID'.
+      required: false
+      schema:
+        type: string
+    HdrOrganisation:
+      name: Organisation
+      in: header
+      description: >-
+        Identification of the organisation technically sending the request to
+        SPF Mobility&Transport. It is the official 10-digit company number as
+        known in the official company register.
+      required: true
+      schema:
+        type: string
+    HdrTarget-Organisation:
+      name: Target-Organisation
+      in: header
+      description: >-
+        Identification of the organisation for which the information is
+        intended, from which the information is coming or which is business-wise
+        responsible. It is the official 10-digit company number as known in the
+        official company register.
+      required: true
+      schema:
+        type: string
+    HdrTarget-Organisation-Description:
+      name: Target-Organisation-Description
+      in: header
+      description: Description of the target-organisation.
+      required: true
+      schema:
+        type: string
+    HdrUser-Organisation:
+      name: User-Organisation
+      in: header
+      description: Identification of the organisation of the user.
+      required: true
+      schema:
+        type: string
+    HdrUser-Organisation-Description:
+      name: User-Organisation-Description
+      in: header
+      description: Description of the organisation of the user.
+      required: true
+      schema:
+        type: string
+    HdrApplication:
+      name: Application
+      in: header
+      description: >-
+        The requesting business application, agreed and predefined by SPF
+        Mobility&Transports and is based on the business authorisation to the
+        target-organisation.
+      required: true
+      schema:
+        type: string
+    HdrUser-Id:
+      name: User-Id
+      in: header
+      description: >-
+        Identification of the person who is executing the request; the
+        identification needs to be done by the users own organisation. It can be
+        a reference which allows the organisation to retrieve the user within
+        the organisation, the organisation can use the legal logging of
+        transactions where a link between this reference and the user is logged.
+        It cannot be the 11-digit national number of the user. This header is
+        kept in the loggings and when necessary (for example in case of a legal
+        investigation) the organisation needs to be able to identify the user.
+      required: true
+      schema:
+        type: string
+    HdrUser-Reference:
+      name: User-Reference
+      in: header
+      description: Identification of the reference assigned by the user.
+      required: false
+      schema:
+        type: string
+    HdrAccept-Language:
+      name: Accept-Language
+      in: header
+      description: Language in which valued properties of the response should be returned.
+      required: true
+      schema:
+        type: string
+        pattern: ^(nl|fr|en|de)$
+        default: nl
+      examples:
+        nl:
+          value: nl
+          summary: Nederlands
+        fr:
+          value: fr
+          summary: Frans
+        en:
+          value: en
+          summary: Engels
+        de:
+          value: de
+          summary: Duits
