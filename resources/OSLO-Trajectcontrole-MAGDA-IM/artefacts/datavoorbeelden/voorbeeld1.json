@@ -1,0 +1,49 @@
+{
+   "self": "/eucarisCBERegistrations?countryCode=EUCOP&plateNr1=123ABC&dataScope=all",
+   "items": [   {
+      "license":       {
+         "plateNr": "123ABC",
+         "referenceDateTime": "2026-09-09",
+         "language":          {
+            "code": "NLD",
+            "description": "Dutch"
+         }
+      },
+      "holder":       {
+         "referenceDateTime": "2026-09-09",
+         "person":          {
+            "id":             {
+               "typeCode": "PIN",
+               "typeDescription": "Personal Identification Number",
+               "number": "123456789"
+            },
+            "lastName": ["Jansens"],
+            "firstName": ["Jan"],
+            "gender":             {
+               "code": "M",
+               "description": "Male"
+            },
+            "birthDate": "1948-11-09",
+            "birthPlace": "Amsterdam",
+            "namePrintable": "Jan Jansens"
+         },
+         "address":          {
+            "streetName": "STATIONSTRAAT",
+            "houseNumber": "12",
+            "postalCode": "1011",
+            "cityName": "AMSTERDAM",
+            "country":             {
+               "code": "NL",
+               "description": "NL"
+            },
+            "printableLine": ["Stationstraat 12, 1011 Amsterdam, NL"]
+         }
+      },
+      "vehicle":       {
+         "vin": "TEST123456789",
+         "commercialName": "MODEL-A123; 1.5L",
+         "firstRegistrationDate": "2026-09-09",
+         "category": {"code": "M1"}
+      }
+   }]
+}

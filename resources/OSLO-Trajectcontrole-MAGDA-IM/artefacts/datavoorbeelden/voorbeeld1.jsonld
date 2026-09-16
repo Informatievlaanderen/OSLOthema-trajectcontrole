@@ -1,0 +1,71 @@
+{
+    "@context": "https://implementatie.data.test-vlaanderen.be/doc/implementatiemodel/magda/voertuigregistratie/v0.3.0/context/voertuigregistratie-im.jsonld",
+    "@type": "VehicleRegistrationEnvelope",
+    "data": [
+        {
+            "@type": "Registratie",
+            "taal": {
+                "@type": "Concept",
+                "code": "NLD",
+                "voorkeursnaam": "Dutch"
+            },
+            "nummerplaat": {
+                "@type": "Nummerplaat",
+                "referentiedatum": "2026-09-09",
+                "registratienummer": {
+                    "@type": "Identificator",
+                    "identificator": "123ABC"
+                }
+            },
+            "houder": {
+                "@type": "GeregistreerdPersoon",
+                "referentiedatum": "2026-09-09",
+                "volledigeNaam": "Jan Jansens",
+                "voornaam": "Jan",
+                "achternaam": "Jansens",
+                "registratie": {
+                    "@type": "Identificator",
+                    "identificator": "123456789",
+                    "schema": {
+                        "@type": "Concept",
+                        "code": "PIN",
+                        "voorkeursnaam": "Personal Identification Number"
+                    }
+                },
+                "heeftGeboorte": {
+                    "@type": "Geboorte",
+                    "datum": "1948-11-09",
+                    "plaats": {
+                        "@type": "Plaats",
+                        "plaatsnaam": "Amsterdam"
+                    }
+                },
+                "contactinfo": {
+                    "@type": "Contactpunt",
+                    "adres": {
+                        "@type": "Adresvoorstelling",
+                        "gemeentenaam": "AMSTERDAM",
+                        "huisnummer": "12",
+                        "land": "NL",
+                        "postcode": "1011",
+                        "straatnaam": "STATIONSTRAAT",
+                        "volledigAdres": "Stationstraat 12, 1011 Amsterdam, NL"
+                    }
+                }
+            },
+            "voertuig": {
+                "@type": "Voertuig",
+                "eersteRegistratieDatum": "2026-09-09",
+                "commercieleNaam": "MODEL-A123; 1.5L",
+                "type": {
+                    "@type": "Concept",
+                    "code": "M1"
+                },
+                "vin": {
+                    "@type": "Identificator",
+                    "identificator": "TEST123456789"
+                }
+            }
+        }
+    ]
+}
