@@ -10,7 +10,7 @@ info:
     url: >-
       https://vlaamseoverheid.atlassian.net/wiki/spaces/MG/pages/6175818080/GET+mobility+crossborderRegistrations+-+v1#Gebruiksvoorwaarden
 servers:
-  - url: api/v1/mobiliteit/
+  - url: /api/v1/mobility
     description: Basis URL
 paths:
   /voertuigregistraties:
@@ -19,15 +19,7 @@ paths:
       operationId: VoertuigregistratieGET
       parameters:
         - $ref: '#/components/parameters/HdrX-Correlation-Id'
-        - $ref: '#/components/parameters/HdrLegalPurpose'
-        - $ref: '#/components/parameters/HdrOrganisation'
-        - $ref: '#/components/parameters/HdrTarget-Organisation'
-        - $ref: '#/components/parameters/HdrTarget-Organisation-Description'
-        - $ref: '#/components/parameters/HdrUser-Organisation'
-        - $ref: '#/components/parameters/HdrUser-Organisation-Description'
-        - $ref: '#/components/parameters/HdrApplication'
-        - $ref: '#/components/parameters/HdrUser-Id'
-        - $ref: '#/components/parameters/HdrUser-Reference'
+        - $ref: '#/components/parameters/HdrX-Magda-Enduser-Id'
         - $ref: '#/components/parameters/HdrAccept-Language'
         - in: query
           name: overtreding
@@ -82,31 +74,40 @@ paths:
             frankrijk:
               value: FR
               summary: Frankrijk
-        - name: kenteken1
+        - name: nummerplaat1
           in: query
           description: >-
-            Het eerste deel van het kenteken. In sommige landen zoals Duitsland
-            bestaat het kenteken uit 2 delen: district code (kenteken1) en
-            kenteken (kenteken2).
+            Het eerste deel van de nummerplaat. In sommige landen zoals Duitsland
+            bestaat de nummerplaat uit 2 delen: district code (nummerplaat1) en
+            nummerplaat (nummerplaat2).
           required: true
           schema:
             type: string
+            maxLength: 15
           examples:
             1ABC123:
               value: 1ABC123
-              summary: Nummerplaat 1ABC123
+              summary: Nummerplaat 1ABC123 (België)
             2XYZ456:
               value: 2XYZ456
-              summary: Nummerplaat 2XYZ456
-        - name: kenteken2
+              summary: Nummerplaat 2XYZ456 (België)
+            B:
+              value: B
+              summary: Nummerplaat PU2189 met districtcode B van Berlijn (Duitsland)
+        - name: nummerplaat2
           in: query
           description: >-
-            Het tweede deel van het kenteken. In sommige landen zoals Duitsland
-            bestaat het kenteken uit 2 delen: district code (kenteken1) en
-            kentenken (kenteken2)
+            Het tweede deel van de nummerplaat indien van toepassing.
+            In sommige landen zoals Duitsland bestaat de nummerplaat
+            uit 2 delen: district code (nummerplaat1) en nummerplaat (nummerplaat2).
           required: false
           schema:
             type: string
+            maxLength: 15
+          examples:
+            PU2189:
+              value: PU2189
+              summary: Nummerplaat PU2189 met districtcode B van Berlijn (Duitsland)
         - name: datum
           in: query
           description: >-
@@ -150,37 +151,37 @@ paths:
             application/ld+json:
               schema:
                 $ref: >-
-                  components.json#/components/schemas/VehicleRegistrationEnvelope
+                  ./voertuigregistratie-components.yaml#/components/schemas/VehicleRegistrationEnvelope
         '400':
           description: Ongeldige invoer.
           content:
             application/ld+json:
               schema:
-                $ref: 'components.json#/components/schemas/Problemdetail'
+                $ref: './voertuigregistratie-components.yaml#/components/schemas/Problemdetail'
         '401':
           description: Ongeldige authenticatie of autorisatie.
           content:
             application/ld+json:
               schema:
-                $ref: 'components.json#/components/schemas/Problemdetail'
+                $ref: './voertuigregistratie-components.yaml#/components/schemas/Problemdetail'
         '500':
           description: Er is een overwachte fout opgetreden.
           content:
             application/ld+json:
               schema:
-                $ref: 'components.json#/components/schemas/Problemdetail'
+                $ref: './voertuigregistratie-components.yaml#/components/schemas/Problemdetail'
         '502':
           description: Bad Gateway - foutief antwoord van de bronservice.
           content:
             application/ld+json:
               schema:
-                $ref: 'components.json#/components/schemas/Problemdetail'
+                $ref: './voertuigregistratie-components.yaml#/components/schemas/Problemdetail'
         '503':
           description: Service unavailable - de bronservice is tijdelijk niet beschikbaar.
           content:
             application/ld+json:
               schema:
-                $ref: 'components.json#/components/schemas/Problemdetail'
+                $ref: './voertuigregistratie-components.yaml#/components/schemas/Problemdetail'
         '504':
           description: >-
             Gateway Timeout - de bronservice antwoordde niet binnen de
@@ -188,7 +189,7 @@ paths:
           content:
             application/ld+json:
               schema:
-                $ref: 'components.json#/components/schemas/Problemdetail'
+                $ref: './voertuigregistratie-components.yaml#/components/schemas/Problemdetail'
 components:
   parameters:
     HdrX-Correlation-Id:
@@ -200,70 +201,8 @@ components:
         type: string
         format: uuid
         example: 7da7a728-f910-11e6-942a-68f728c1ba70
-    HdrLegalPurpose:
-      name: Legal-Purpose
-      in: header
-      description: >-
-        A unique identifier indicating the legal purpose. When no unique
-        identifier received from Mobility it can be left empty. Should
-        especially be used in combination with a 'cumul-clientID'.
-      required: false
-      schema:
-        type: string
-    HdrOrganisation:
-      name: Organisation
-      in: header
-      description: >-
-        Identification of the organisation technically sending the request to
-        SPF Mobility&Transport. It is the official 10-digit company number as
-        known in the official company register.
-      required: true
-      schema:
-        type: string
-    HdrTarget-Organisation:
-      name: Target-Organisation
-      in: header
-      description: >-
-        Identification of the organisation for which the information is
-        intended, from which the information is coming or which is business-wise
-        responsible. It is the official 10-digit company number as known in the
-        official company register.
-      required: true
-      schema:
-        type: string
-    HdrTarget-Organisation-Description:
-      name: Target-Organisation-Description
-      in: header
-      description: Description of the target-organisation.
-      required: true
-      schema:
-        type: string
-    HdrUser-Organisation:
-      name: User-Organisation
-      in: header
-      description: Identification of the organisation of the user.
-      required: true
-      schema:
-        type: string
-    HdrUser-Organisation-Description:
-      name: User-Organisation-Description
-      in: header
-      description: Description of the organisation of the user.
-      required: true
-      schema:
-        type: string
-    HdrApplication:
-      name: Application
-      in: header
-      description: >-
-        The requesting business application, agreed and predefined by SPF
-        Mobility&Transports and is based on the business authorisation to the
-        target-organisation.
-      required: true
-      schema:
-        type: string
-    HdrUser-Id:
-      name: User-Id
+    HdrX-Magda-Enduser-Id:
+      name: X-Magda-Enduser-Id
       in: header
       description: >-
         Identification of the person who is executing the request; the
@@ -277,18 +216,11 @@ components:
       required: true
       schema:
         type: string
-    HdrUser-Reference:
-      name: User-Reference
-      in: header
-      description: Identification of the reference assigned by the user.
-      required: false
-      schema:
-        type: string
     HdrAccept-Language:
       name: Accept-Language
       in: header
       description: Language in which valued properties of the response should be returned.
-      required: true
+      required: false
       schema:
         type: string
         pattern: ^(nl|fr|en|de)$
